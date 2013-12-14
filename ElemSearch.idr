@@ -1,12 +1,12 @@
 module ElemSearch
 import Data.Vect
 
-spares : {a:Type, xs:Vect n a, ys:Vect m a, x:a} ->
+spares : {xs:Vect n a, ys:Vect m a} ->
         Elem x xs -> Elem x (xs ++ ys)
 spares Here = Here
 spares (There p) = There (spares p)
 
-bury : {a:Type, xs:Vect n a, ys:Vect m a, x:a} ->
+bury : {xs:Vect n a, ys:Vect m a} ->
        Elem x xs -> Elem x (ys ++ xs)
 bury {m=Z} {ys=[]} p = p
 bury {m=S depth} {ys=top :: dirt} p = There (bury p)
@@ -25,14 +25,14 @@ parts : {n,m:Nat} -> {xs:Vect (n+m) a} -> Cut xs ->
         (pre:Vect n a ** (post:Vect m a ** pre ++ post = xs))
 parts (append pre post) = (pre ** (post ** refl))
 
-before : {n,m:Nat} -> {xs:Vect (n+m) a} -> Cut xs ->
+before : {xs:Vect (n+m) a} -> Cut xs ->
          (pre:Vect n a ** IsPrefixOf pre xs)
 before cut with (parts cut)
   | (pre ** (post ** p)) = (pre ** replace p (followedBy post))
 before' : {xs:Vect (n+m) a} -> Cut xs -> Vect n a
 before' = getWitness . before
 
-after : {n,m:Nat} -> {xs:Vect (n+m) a} -> Cut xs ->
+after : {xs:Vect (n+m) a} -> Cut xs ->
         (post:Vect m a ** IsSuffixOf post xs)
 after cut with (parts cut)
   | (pre ** (post ** p)) = (post ** replace p (precededBy pre))
