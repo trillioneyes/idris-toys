@@ -42,3 +42,9 @@ after' = getWitness . after
 
 which : {xs : Vect (n+m) a} -> (cut : Cut xs) -> Elem x xs ->
         Either (Elem x (before' cut)) (Elem x (after' cut))
+which {n=Z} (append [] xs) p = Right p
+which {n=S k} (append (x :: pre) xs) Here = Left Here
+which {n=S k} (append (x :: pre) xs) (There p)
+  with (which (append pre xs) p)
+  | Left p' = Left (There p')
+  | Right p' = Right p'
