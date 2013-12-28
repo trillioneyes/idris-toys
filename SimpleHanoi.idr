@@ -24,7 +24,8 @@ Empty hanoi peg = Not (Elem peg hanoi)
 
 -- This should return a more helpfully-typed result in the Right case
 topDisk : (h:Hanoi d p) -> (peg : Fin p) -> Either (Empty h peg) (Fin d)
-
+topDisk [] _ = Left ?elemNilAbsurd
+-- the non-nil case should use an accumulator
 
 {-
 disksAt : Hanoi d p -> Fin p -> (n ** Vect n (Fin d))
