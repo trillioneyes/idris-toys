@@ -21,8 +21,8 @@ mutual
 permutation : Permutation n -> Vect n (Fin n)
 permutation {n} p = permute p (fins n)
   where fins : (n:Nat) -> Vect n (Fin n)
-  	fins Z = []
-	fins (S k) = fZ :: map fS (fins k)
+        fins Z = []
+        fins (S k) = fZ :: map fS (fins k)
 permutation' : Permutation n -> Vect n Nat
 permutation' p = map cast (permutation p)
 
