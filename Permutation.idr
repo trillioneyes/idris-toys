@@ -34,13 +34,16 @@ reverse : Permutation n
 reverse {n=Z} = []
 reverse {n=S n} = last :: reverse
 
+
+finish : Fin n -> Permutation n
+finish fZ = id
+finish (fS k) = fS (zeroize k) :: finish k
+  where zeroize : Fin m -> Fin m
+        zeroize fZ = fZ
+        zeroize (fS k) = fZ
+
 swap : Fin n -> Fin n -> Permutation n
--- hints for writing swap:
--- *Permutation> permutation' [4,1,1,1,0]
--- [4, 1, 2, 3, 0] : Vect 5 Nat
--- *Permutation> permutation' [0,2,1,0,0]
--- [0, 3, 2, 1, 4] : Vect 5 Nat
--- *Permutation> permutation' [7,1,1,1,1,1,1,0]
--- [7, 1, 2, 3, 4, 5, 6, 0] : Vect 8 Nat
--- *Permutation> permutation' [0,0,3,1,1,0,0,0]
--- [0, 1, 5, 3, 4, 2, 6, 7] : Vect 8 Nat
+swap (fS j) (fS k) = fZ :: swap j k
+swap (fS j) fZ = fS j :: finish j
+swap fZ (fS k) = fS k :: finish k
+swap fZ fZ = id
