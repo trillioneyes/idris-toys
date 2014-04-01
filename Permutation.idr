@@ -1,5 +1,7 @@
 module Permutation
 
+%default total
+
 -- a type for representing permutations of n elements
 data Permutation : Nat -> Type where
   Nil : Permutation Z
@@ -15,6 +17,7 @@ mutual
   permute' {elt} (k::p) (a::as) = insert (permute' p as) k
     where insert : Vect n elt -> Fin (S n) -> Vect (S n) elt
           insert xs fZ = a :: xs
+          insert [] (fS i) = [a]
           insert (x::xs) (fS k) = x :: insert xs k
 
 
